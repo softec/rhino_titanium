@@ -190,6 +190,12 @@
       <include name="org/mozilla/javascript/json/*.class"/>
       <include name="org/mozilla/javascript/optimizer/**/*.class"/>
       <include name="org/mozilla/classfile/**/*.class"/>
+
+	  <!-- Titanium specific inclusions (needed for CommonJS require()) -->
+	  <include name="org/mozilla/javascript/commonjs/module/Require.class"/>
+	  <include name="org/mozilla/javascript/commonjs/module/RequireBuilder.class"/>
+	  <include name="org/mozilla/javascript/commonjs/module/ModuleScript.class"/>
+	  <include name="org/mozilla/javascript/commonjs/module/ModuleScriptProvider.class"/>
     </jar>
 
   </target>
