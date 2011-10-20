@@ -1,0 +1,86 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.mozilla.javascript</groupId>
+
+  <parent>
+    <groupId>lu.softec</groupId>
+    <artifactId>softec</artifactId>
+    <version>2</version>
+  </parent>
+
+  <artifactId>rhino-titanium</artifactId>
+  <version>1.7R3-softec</version>
+  <packaging>pom</packaging>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.6</version>
+        <executions>
+          <execution>
+            <id>clean</id>
+            <phase>clean</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <ant antfile="build.xml" target="clean" />
+              </target>
+            </configuration>
+          </execution>
+          <execution>
+            <id>package</id>
+            <phase>package</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <ant antfile="build.xml" target="jar" />
+                <ant antfile="build.xml" target="smalljar" />
+                <zip destfile="${project.build.directory}/${project.build.finalName}.zip">
+                    <fileset dir="${basedir}/build/rhino1_7R3pre/" includes="*js.jar"/>
+                </zip>
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.7</version>
+        <executions>
+          <execution>
+            <id>attach-artifacts</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attach-artifact</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <artifacts>
+            <artifact>
+              <file>${project.build.directory}/${project.build.finalName}.zip</file>
+              <type>zip</type>
+            </artifact>
+          </artifacts>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <distributionManagement>
+    <repository>
+      <id>softec-opensource</id>
+      <name>Open Source Release Distribution Repository</name>
+      <url>http://nexus.softec.lu:8081/content/repositories/opensource</url>
+    </repository>
+  </distributionManagement>
+</project>
