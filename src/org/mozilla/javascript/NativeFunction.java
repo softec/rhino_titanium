@@ -67,7 +67,23 @@ public abstract class NativeFunction extends BaseFunction
     {
         String encodedSource = getEncodedSource();
         if (encodedSource == null) {
-            return super.decompile(indent, flags);
+            int paramCount = 0;
+            if (0 != (flags & Decompiler.ONLY_BODY_FLAG) || (paramCount = getParamCount()) == 0) {
+                return super.decompile(indent, flags);
+            } else {
+                StringBuffer sb = new StringBuffer();
+                sb.append("function ");
+                sb.append(getFunctionName());
+                sb.append('(');
+                for( int i=0; i<paramCount; i++ ) {
+                    if (i!=0) sb.append(',');
+                    sb.append(getParamOrVarName(i));
+                }
+                sb.append(") {\n\t[native code, arity=");
+                sb.append(getArity());
+                sb.append("]\n}\n");
+                return sb.toString();
+            }
         } else {
             UintMap properties = new UintMap(1);
             properties.put(Decompiler.INITIAL_INDENT_PROP, indent);
